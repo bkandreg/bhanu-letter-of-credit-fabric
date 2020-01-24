@@ -1,0 +1,44 @@
+
+OrdererOrgs:
+  - Name: Orderer
+    Domain: loc.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+      - Hostname: orderer2
+      - Hostname: orderer3
+      - Hostname: orderer4
+      - Hostname: orderer5
+PeerOrgs:
+  - Name: Fedex
+    Domain: fedex.loc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+  - Name: GovRegulator
+    Domain: govregulator.loc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+  - Name: Intel
+    Domain: intel.loc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+  - Name: Lenovo
+    Domain: lenovo.loc.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+  
+  # This is the command we use to generate the cryptographic material - certifciates.
+  # sudo chmod 777 letter-of-credit
+  # ../bin/cryptogen generate --config=./crypto-config.yaml 
