@@ -1,0 +1,149 @@
+version: '2'
+ 
+volumes:
+  orderer.fabnet.com:
+  peer0.manufacturer.fabnet.com:
+  peer1.manufacturer.fabnet.com:
+  peer2.manufacturer.fabnet.com:
+  peer0.distributor.fabnet.com:
+  peer1.distributor.fabnet.com:
+  peer2.distributor.fabnet.com:
+  peer0.shipper.fabnet.com:
+  peer1.shipper.fabnet.com:
+  peer2.shipper.fabnet.com:
+ 
+networks:
+  fabnet:
+
+services:
+  ca-manufacturer:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-manufacturer
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manufacturer.fabnet.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/963e87a088755cfe6fbb68cdf764475da0c474db9d38d23b8850ee7b9940c45d_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.manufacturer.fabnet.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/963e87a088755cfe6fbb68cdf764475da0c474db9d38d23b8850ee7b9940c45d_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/manufacturer.fabnet.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerManufacturer
+    networks:
+      - fabnet
+ 
+  ca-distributor:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-distributor
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.distributor.fabnet.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/a1c8b075d4f8d9aae9d4ffdab90427b18845d9cf959acf27cf64ee6c5bec8ddf_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.distributor.fabnet.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/a1c8b075d4f8d9aae9d4ffdab90427b18845d9cf959acf27cf64ee6c5bec8ddf_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/distributor.fabnet.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerDistributor
+    networks:
+      - fabnet
+ 
+  ca-shipper:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-shipper
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.shipper.fabnet.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/69bdf8e764d9dd22ac395ceaefdc45a1434b7f7a051385c61c41fc19bbf38913_sk
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.shipper.fabnet.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/69bdf8e764d9dd22ac395ceaefdc45a1434b7f7a051385c61c41fc19bbf38913_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/shipper.fabnet.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerShipper
+    networks:
+      - fabnet
+ 
+  orderer.fabnet.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.fabnet.com
+    container_name: orderer.fabnet.com
+    networks:
+      - fabnet
+ 
+  peer0.manufacturer.fabnet.com:
+    container_name: peer0.manufacturer.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.manufacturer.fabnet.com
+    networks:
+      - fabnet
+ 
+  peer1.manufacturer.fabnet.com:
+    container_name: peer1.manufacturer.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.manufacturer.fabnet.com
+    networks:
+      - fabnet
+ 
+  peer2.manufacturer.fabnet.com:
+    container_name: peer2.manufacturer.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer2.manufacturer.fabnet.com
+    networks:
+      - fabnet
+
+  peer0.distributor.fabnet.com:
+    container_name: peer0.distributor.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.distributor.fabnet.com
+    networks:
+      - fabnet
+ 
+  peer1.distributor.fabnet.com:
+    container_name: peer1.distributor.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.distributor.fabnet.com
+    networks:
+      - fabnet
+ 
+  peer2.distributor.fabnet.com:
+    container_name: peer2.distributor.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer2.distributor.fabnet.com
+    networks:
+      - fabnet
+
+  peer0.shipper.fabnet.com:
+    container_name: peer0.shipper.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.shipper.fabnet.com
+    networks:
+      - fabnet
+ 
+  peer1.shipper.fabnet.com:
+    container_name: peer1.shipper.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.shipper.fabnet.com
+    networks:
+      - fabnet
+
+  peer2.shipper.fabnet.com:
+    container_name: peer2.shipper.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer2.shipper.fabnet.com
+    networks:
+      - fabnet
+ 

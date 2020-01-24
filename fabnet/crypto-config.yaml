@@ -1,0 +1,40 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: fabnet.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+      - Hostname: orderer2
+    
+PeerOrgs:
+  # ---------------------------------------------------------------------------
+  # Manufacturer
+  # ---------------------------------------------------------------------------
+  - Name: Manufacturer
+    Domain: manufacturer.fabnet.com
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+  # ---------------------------------------------------------------------------
+  # Distributor
+  # ---------------------------------------------------------------------------
+  - Name: Distributor
+    Domain: distributor.fabnet.com
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+  # ---------------------------------------------------------------------------
+  # Shipper
+  # ---------------------------------------------------------------------------
+  - Name: Shipper
+    Domain: shipper.fabnet.com
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 1
+  

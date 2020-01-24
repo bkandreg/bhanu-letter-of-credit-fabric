@@ -1,0 +1,263 @@
+################################################################################
+#   Section: Organizations
+################################################################################
+Organizations:
+ 
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/fabnet.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+ 
+    - &Manufacturer
+        Name: ManufacturerMSP
+        ID: ManufacturerMSP
+        MSPDir: crypto-config/peerOrganizations/manufacturer.fabnet.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ManufacturerMSP.admin', 'ManufacturerMSP.peer', 'ManufacturerMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ManufacturerMSP.admin', 'ManufacturerMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ManufacturerMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.manufacturer.fabnet.com
+              Port: 7051
+ 
+    - &Distributor
+        Name: DistributorMSP
+        ID: DistributorMSP
+        MSPDir: crypto-config/peerOrganizations/distributor.fabnet.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('DistributorMSP.admin', 'DistributorMSP.peer', 'DistributorMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('DistributorMSP.admin', 'DistributorMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('DistributorMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.distributor.fabnet.com
+              Port: 10051
+ 
+    - &Shipper
+        Name: ShipperMSP
+        ID: ShipperMSP
+        MSPDir: crypto-config/peerOrganizations/shipper.fabnet.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ShipperMSP.admin', 'ShipperMSP.peer', 'ShipperMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ShipperMSP.admin', 'ShipperMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ShipperMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.shipper.fabnet.com
+              Port: 13051
+ 
+################################################################################
+#   SECTION: Capabilities
+################################################################################
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_4_3: true
+        V1_3: false
+        V1_1: false
+    Orderer: &OrdererCapabilities
+        V1_4_2: true
+        V1_1: false
+    Application: &ApplicationCapabilities
+        V1_4_2: true
+        V1_3: false
+        V1_2: false
+        V1_1: false
+ 
+################################################################################
+#   SECTION: Application
+################################################################################
+Application: &ApplicationDefaults
+
+    Organizations:
+
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+ 
+    Capabilities:
+        <<: *ApplicationCapabilities
+################################################################################
+#   SECTION: Orderer
+################################################################################
+Orderer: &OrdererDefaults
+ 
+    OrdererType: solo
+    Addresses:
+        - orderer.fabnet.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    EtcdRaft:
+        Consenters:
+            - Host: orderer.fabnet.com
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer.fabnet.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer.fabnet.com/tls/server.crt
+            - Host: orderer2.fabnet.com
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer2.fabnet.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer2.fabnet.com/tls/server.crt
+             
+    Organizations:
+ 
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+     
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+ 
+################################################################################
+#   CHANNEL
+################################################################################
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+################################################################################
+#   Profile
+################################################################################
+Profiles:
+ 
+    ThreeOrgsFabnetGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            FabNetConsortium:
+                Organizations:
+                    - *Manufacturer
+                    - *Distributor
+                    - *Shipper
+    ThreeOrgsFabnetChannel:
+        Consortium: FabNetConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Manufacturer
+                - *Distributor
+                - *Shipper
+            Capabilities:
+                <<: *ApplicationCapabilities
+ 
+    SampleDevModeKafka:
+        <<: *ChannelDefaults
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            OrdererType: kafka
+            Kafka:
+                Brokers:
+                - kafka.fabnet.com:9092
+            Organizations:
+            - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+            - <<: *OrdererOrg
+        Consortiums:
+            FabNetConsortium:
+                Organizations:
+                - *Manufacturer
+                - *Distributor
+                - *Shipper
+ 
+    SampleMultiNodeEtcdRaft:
+        <<: *ChannelDefaults
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            OrdererType: etcdraft
+            EtcdRaft:
+                Consenters:
+                - Host: orderer.fabnet.com
+                  Port: 7050
+                  ClientTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer.fabnet.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer.fabnet.com/tls/server.crt
+                - Host: orderer2.fabnet.com
+                  Port: 7050
+                  ClientTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer2.fabnet.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/fabnet.com/orderers/orderer2.fabnet.com/tls/server.crt
+            Addresses:
+                - orderer.fabnet.com:7050
+                - orderer2.fabnet.com:7050
+ 
+            Organizations:
+            - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+            - <<: *OrdererOrg
+        Consortiums:
+            FabNetConsortium:
+                Organizations:
+                - *Manufacturer
+                - *Distributor
+                - *Shipper
