@@ -1,0 +1,119 @@
+---
+name: fabnet-manufacturer
+version: 1.0.0
+client:
+  organization: Manufacturer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Manufacturer:
+    mspid: ManufacturerMSP
+    peers:
+    - peer0.manufacturer.fabnet.com
+    - peer1.manufacturer.fabnet.com
+    - peer2.manufacturer.fabnet.com
+    certificateAuthorities:
+    - ca.manufacturer.fabnet.com
+peers:
+  peer0.manufacturer.fabnet.com:
+    url: grpcs://localhost:7051
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICdTCCAhygAwIBAgIRAIF03ICGnZeQCBzWk+JxkmAwCgYIKoZIzj0EAwIwgYQx
+        CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+        RnJhbmNpc2NvMSAwHgYDVQQKExdtYW51ZmFjdHVyZXIuZmFibmV0LmNvbTEmMCQG
+        A1UEAxMddGxzY2EubWFudWZhY3R1cmVyLmZhYm5ldC5jb20wHhcNMjAwMTIyMTcz
+        NjAwWhcNMzAwMTE5MTczNjAwWjCBhDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNh
+        bGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xIDAeBgNVBAoTF21hbnVm
+        YWN0dXJlci5mYWJuZXQuY29tMSYwJAYDVQQDEx10bHNjYS5tYW51ZmFjdHVyZXIu
+        ZmFibmV0LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG+QYQrO2NEFYXy0
+        h3/TQSZBIee5ityzfl9Iif04ZRT7iFkOzoFm40/yBu19WBezMEeomPqm+YrU8xMg
+        CL2MAqajbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYI
+        KwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQg9pCM+6RFQcOzcLty
+        25Y3/CLjlujva+pnObB14Fyhss4wCgYIKoZIzj0EAwIDRwAwRAIgTN5j5Wumeaw4
+        O5D2pk62qRppCQsCjJWmpGGnSwjyEacCIAbYWWghRpW0pLnmjeHMSufrMDEM3L7r
+        T+C5IGqtZh1v
+        -----END CERTIFICATE-----
+        
+    grpcOptions:
+      ssl-target-name-override: peer0.manufacturer.fabnet.com
+      hostnameOverride: peer0.manufacturer.fabnet.com
+
+  peer1.manufacturer.fabnet.com:
+    url: grpcs://localhost:8051
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICdTCCAhygAwIBAgIRAIF03ICGnZeQCBzWk+JxkmAwCgYIKoZIzj0EAwIwgYQx
+        CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+        RnJhbmNpc2NvMSAwHgYDVQQKExdtYW51ZmFjdHVyZXIuZmFibmV0LmNvbTEmMCQG
+        A1UEAxMddGxzY2EubWFudWZhY3R1cmVyLmZhYm5ldC5jb20wHhcNMjAwMTIyMTcz
+        NjAwWhcNMzAwMTE5MTczNjAwWjCBhDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNh
+        bGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xIDAeBgNVBAoTF21hbnVm
+        YWN0dXJlci5mYWJuZXQuY29tMSYwJAYDVQQDEx10bHNjYS5tYW51ZmFjdHVyZXIu
+        ZmFibmV0LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG+QYQrO2NEFYXy0
+        h3/TQSZBIee5ityzfl9Iif04ZRT7iFkOzoFm40/yBu19WBezMEeomPqm+YrU8xMg
+        CL2MAqajbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYI
+        KwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQg9pCM+6RFQcOzcLty
+        25Y3/CLjlujva+pnObB14Fyhss4wCgYIKoZIzj0EAwIDRwAwRAIgTN5j5Wumeaw4
+        O5D2pk62qRppCQsCjJWmpGGnSwjyEacCIAbYWWghRpW0pLnmjeHMSufrMDEM3L7r
+        T+C5IGqtZh1v
+        -----END CERTIFICATE-----
+        
+    grpcOptions:
+      ssl-target-name-override: peer1.manufacturer.fabnet.com
+      hostnameOverride: peer1.manufacturer.fabnet.com
+  
+  peer2.manufacturer.fabnet.com:
+    url: grpcs://localhost:9051
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICdTCCAhygAwIBAgIRAIF03ICGnZeQCBzWk+JxkmAwCgYIKoZIzj0EAwIwgYQx
+        CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+        RnJhbmNpc2NvMSAwHgYDVQQKExdtYW51ZmFjdHVyZXIuZmFibmV0LmNvbTEmMCQG
+        A1UEAxMddGxzY2EubWFudWZhY3R1cmVyLmZhYm5ldC5jb20wHhcNMjAwMTIyMTcz
+        NjAwWhcNMzAwMTE5MTczNjAwWjCBhDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNh
+        bGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xIDAeBgNVBAoTF21hbnVm
+        YWN0dXJlci5mYWJuZXQuY29tMSYwJAYDVQQDEx10bHNjYS5tYW51ZmFjdHVyZXIu
+        ZmFibmV0LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG+QYQrO2NEFYXy0
+        h3/TQSZBIee5ityzfl9Iif04ZRT7iFkOzoFm40/yBu19WBezMEeomPqm+YrU8xMg
+        CL2MAqajbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYI
+        KwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQg9pCM+6RFQcOzcLty
+        25Y3/CLjlujva+pnObB14Fyhss4wCgYIKoZIzj0EAwIDRwAwRAIgTN5j5Wumeaw4
+        O5D2pk62qRppCQsCjJWmpGGnSwjyEacCIAbYWWghRpW0pLnmjeHMSufrMDEM3L7r
+        T+C5IGqtZh1v
+        -----END CERTIFICATE-----
+        
+    grpcOptions:
+      ssl-target-name-override: peer2.manufacturer.fabnet.com
+      hostnameOverride: peer2.manufacturer.fabnet.com
+
+certificateAuthorities:
+  ca.manufacturer.fabnet.com:
+    url: https://localhost:7054
+    caName: ca-manufacturer
+    tlsCACerts:
+      pem: |
+        -----BEGIN CERTIFICATE-----
+        MIICbzCCAhWgAwIBAgIQIqTjwEQ3p3G1aTlkPrA5cDAKBggqhkjOPQQDAjCBgTEL
+        MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+        cmFuY2lzY28xIDAeBgNVBAoTF21hbnVmYWN0dXJlci5mYWJuZXQuY29tMSMwIQYD
+        VQQDExpjYS5tYW51ZmFjdHVyZXIuZmFibmV0LmNvbTAeFw0yMDAxMjIxNzM2MDBa
+        Fw0zMDAxMTkxNzM2MDBaMIGBMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZv
+        cm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEgMB4GA1UEChMXbWFudWZhY3R1
+        cmVyLmZhYm5ldC5jb20xIzAhBgNVBAMTGmNhLm1hbnVmYWN0dXJlci5mYWJuZXQu
+        Y29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEgA+7fCZPgudVLw7J/wNrEpaF
+        N0m8Pw7YRWjQ9cVddjTPlUohrhD3ShErBlsI3mNXp8VgJ2Zig4/6QqPBcwEZqKNt
+        MGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD
+        ATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQiBCCWPoegiHVc/m+7aM33ZEddoMR0
+        25040juIUO57mUDEXTAKBggqhkjOPQQDAgNIADBFAiEAxT7EWbs9WFm3Gs0g0nfm
+        /FtNqczZYrxOTLGr9twv8aUCIC55Z+YsQNjC+wIkSJCrXNY8i7CFfzOuEcArqGUK
+        Gqny
+        -----END CERTIFICATE-----
+        
+    httpOptions:
+      verify: false
