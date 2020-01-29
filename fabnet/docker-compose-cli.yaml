@@ -147,11 +147,37 @@ services:
       service: peer2.shipper.fabnet.com
     networks:
       - fabnet
+
+
+  couchdb0.manufacturer.fabnet.com:
+    container_name: couchdb0.manufacturer.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: couchdb0.manufacturer.fabnet.com
+    networks:
+      - fabnet
+
+  couchdb1.manufacturer.fabnet.com:
+    container_name: couchdb1.manufacturer.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: couchdb1.manufacturer.fabnet.com
+    networks:
+      - fabnet
+
+  couchdb2.manufacturer.fabnet.com:
+    container_name: couchdb2.manufacturer.fabnet.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: couchdb2.manufacturer.fabnet.com
+    networks:
+      - fabnet
   
   cli:
     container_name: cli
     image: hyperledger/fabric-tools:$IMAGE_TAG
     tty: true
+    dns_search: .
     stdin_open: true
     environment:
       - SYS_CHANNEL=$SYS_CHANNEL
@@ -186,6 +212,9 @@ services:
       - peer0.shipper.fabnet.com
       - peer1.shipper.fabnet.com
       - peer2.shipper.fabnet.com
+      - couchdb0.manufacturer.fabnet.com
+      - couchdb1.manufacturer.fabnet.com
+      - couchdb2.manufacturer.fabnet.com
     networks:
       - fabnet
  

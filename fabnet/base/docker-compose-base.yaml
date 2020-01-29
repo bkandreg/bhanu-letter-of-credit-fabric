@@ -14,7 +14,40 @@ services:
         - orderer.fabnet.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
- 
+
+  couchdb0.manufacturer.fabnet.com:
+    container_name: couchdb0.manufacturer.fabnet.com
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=user
+      - COUCHDB_PASSWORD=password
+    ports:
+      - "5984:5984"
+    networks:
+      - fabnet
+
+  couchdb1.manufacturer.fabnet.com:
+    container_name: couchdb0.manufacturer.fabnet.com
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=user
+      - COUCHDB_PASSWORD=password
+    ports:
+      - "6984:5984"
+    networks:
+      - fabnet
+
+  couchdb2.manufacturer.fabnet.com:
+    container_name: couchdb0.manufacturer.fabnet.com
+    image: hyperledger/fabric-couchdb
+    environment:
+      - COUCHDB_USER=user
+      - COUCHDB_PASSWORD=password
+    ports:
+      - "7984:5984"
+    networks:
+      - fabnet
+
   peer0.manufacturer.fabnet.com:
     container_name: peer0.manufacturer.fabnet.com
     extends:
@@ -29,6 +62,10 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.manufacturer.fabnet.com:8051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.manufacturer.fabnet.com:7051
       - CORE_PEER_LOCALMSPID=ManufacturerMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0.manufacturer.fabnet.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=user
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=password
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/manufacturer.fabnet.com/peers/peer0.manufacturer.fabnet.com/msp:/etc/hyperledger/fabric/msp
@@ -51,6 +88,10 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.manufacturer.fabnet.com:8051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer2.manufacturer.fabnet.com:9051
       - CORE_PEER_LOCALMSPID=ManufacturerMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1.manufacturer.fabnet.com:6984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=user
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=password
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/manufacturer.fabnet.com/peers/peer1.manufacturer.fabnet.com/msp:/etc/hyperledger/fabric/msp
@@ -74,6 +115,10 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.manufacturer.fabnet.com:9051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.manufacturer.fabnet.com:7051
       - CORE_PEER_LOCALMSPID=ManufacturerMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2.manufacturer.fabnet.com:7984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=user
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=password
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/manufacturer.fabnet.com/peers/peer2.manufacturer.fabnet.com/msp:/etc/hyperledger/fabric/msp
